@@ -11,7 +11,7 @@ on:
   pull_request:
 
 env:
-  IMAGE_NAME: atmoz/sftp
+  IMAGE_NAME: ghherlin/sftp
 
 jobs:
   build:
@@ -55,20 +55,20 @@ jobs:
       - name: Test alpine image
         run: tests/run $IMAGE_NAME:alpine
 
-      - name: Verify signature
-        if: github.ref == 'refs/heads/master'
-        uses: atmoz/git-verify-ref@master
-        with:
-          import-github-users: atmoz
+#      - name: Verify signature
+#        if: github.ref == 'refs/heads/master'
+#        uses: atmoz/git-verify-ref@master
+#        with:
+#          import-github-users: atmoz
 
-      - name: Push images to Docker Hub registry
-        if: github.ref == 'refs/heads/master'
-        run: |
-          echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login \
-            -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
-
-          docker push --all-tags $IMAGE_NAME
-          docker logout
+#      - name: Push images to Docker Hub registry
+#        if: github.ref == 'refs/heads/master'
+#        run: |
+#          echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login \
+#            -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+#
+#          docker push --all-tags $IMAGE_NAME
+#          docker logout
 
       - name: Push images to GitHub registry
         if: github.ref == 'refs/heads/master'
